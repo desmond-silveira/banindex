@@ -1,6 +1,3 @@
-/**
- * Copyright (c) 2015 Local Corporation. All Rights Reserved.
- */
 package info.statstrats.banindex;
 
 import javax.servlet.annotation.WebServlet;
