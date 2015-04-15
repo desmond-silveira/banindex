@@ -1,3 +1,6 @@
+/**
+ * Copyright (c) 2015 Desmond Silveira. All rights reserved.
+ */
 package info.statstrats.banindex;
 
 import javax.servlet.annotation.WebServlet;
