@@ -7,14 +7,26 @@ package info.statstrats.banindex;
  * @author dsilveira
  */
 public enum Region {
-    BR,
-    EUNE,
-    EUW,
-    KR,
-    LAN,
-    LAS,
-    NA,
-    OCE,
-    RU,
-    TR
+    BR("br"),
+    EUNE("eune"),
+    EUW("euw"),
+    KR("kr"),
+    LAN("lan"),
+    LAS("las"),
+    NA("na"),
+    OCE("oce"),
+    RU("ru"),
+    TR("tr")
+    ;
+
+    final String name;
+
+    Region(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

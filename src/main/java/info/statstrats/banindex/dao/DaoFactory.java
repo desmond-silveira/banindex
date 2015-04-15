@@ -51,6 +51,10 @@ public class DaoFactory {
         conn.close();
     }
 
+    public ApiDao createApiDao() {
+        return new ApiDao();
+    }
+
 //    /**
 //     * @param table the table
 //     * @return the {@link BiddedSearchDao}
