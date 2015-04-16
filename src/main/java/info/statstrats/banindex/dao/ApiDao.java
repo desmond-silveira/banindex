@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,10 +76,17 @@ public class ApiDao {
     static String get(URL url) {
         logger.debug(url.toString());
         StringBuilder sb = new StringBuilder();
-        int status = 0;
+        HttpStatus status = HttpStatus.NONE;
         try {
+            sleep();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            status = conn.getResponseCode();
+            status = HttpStatus.forCode(conn.getResponseCode());
+            while (status.isRetry()) {
+                logger.warn("{}, retrying...:  {}\n", status, url);
+                sleep();
+                conn = (HttpURLConnection) url.openConnection();
+                status = HttpStatus.forCode(conn.getResponseCode());
+            }
             try (BufferedReader in = new BufferedReader(
                     new InputStreamReader(conn.getInputStream(), Charsets.UTF_8))) {
                 String line;
@@ -86,11 +95,61 @@ public class ApiDao {
                 }
             }
         } catch (IOException e) {
-            logger.warn("HTTP {}:  {}\n", status, url);
+            logger.warn("{}:  {}\n", status, url);
             return null;
         }
         String response = sb.toString();
         logger.trace(response);
         return response;
+    }
+
+    private static enum HttpStatus {
+        NONE(0, Action.FAIL),
+        HTTP_200(200, Action.SUCCESS),
+        HTTP_429(429, Action.RETRY),
+        HTTP_500(500, Action.RETRY);
+
+        private static enum Action {
+            SUCCESS,
+            RETRY,
+            FAIL;
+        }
+
+        final int code;
+        final Action action;
+        static final Map<Integer, HttpStatus> byCode = new HashMap<>();
+        static {
+            for (HttpStatus status : HttpStatus.values()) {
+                byCode.put(status.code,  status);
+            }
+        }
+
+        HttpStatus(int code, Action action) {
+            this.code = code;
+            this.action = action;
+        }
+
+        static HttpStatus forCode(int statusCode) {
+            return byCode.get(statusCode);
+        }
+
+        boolean isRetry() {
+            return action == Action.RETRY;
+        }
+
+        @Override
+        public String toString() {
+            return name();
+        }
+    }
+
+    private static void sleep() {
+        try {
+            Thread.sleep(1200);
+        } catch (InterruptedException e) {
+            logger.error(e);
+            Thread.interrupted();
+            return;
+        }
     }
 }

@@ -42,13 +42,11 @@ public class NurfScraper {
             long beginDate = START;
             do {
                 long[] matchIds = api.retrieveNurfMatchIds(region, beginDate);
-                sleep();
                 if (matchIds != null && matchIds.length > 0) {
                     for (long matchId : matchIds) {
                         Match match = new Match(region, matchId);
                         if (!riotDao.hasMatch(match)) {
                             String json = api.retrieveMatch(match);
-                            sleep();
                             riotDao.insertMatch(match, json);
                         }
                     }
@@ -67,16 +65,6 @@ public class NurfScraper {
         } catch (SQLException e) {
             logger.fatal("Could not close database connection.");
             System.exit(1);
-        }
-    }
-
-    private static void sleep() {
-        try {
-            Thread.sleep(1200);
-        } catch (InterruptedException e) {
-            logger.error(e);
-            Thread.interrupted();
-            return;
         }
     }
 }
