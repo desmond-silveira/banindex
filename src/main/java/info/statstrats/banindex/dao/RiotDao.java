@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2015 Local Corporation. All Rights Reserved.
+ * Copyright (c) 2015 Desmond Silveira. All Rights Reserved.
  */
 package info.statstrats.banindex.dao;
 
