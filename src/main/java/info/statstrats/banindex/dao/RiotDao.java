@@ -13,10 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author dsilveira
- */
 public class RiotDao {
 
     private Connection conn;
@@ -58,6 +57,48 @@ public class RiotDao {
     }
 
     /**
+     * Returns a list of all matches in the data store for the given Region.
+     */
+    public List<Match> getMatches(Region region) throws SQLException {
+        checkNotNull(region);
+        List<Match> matches = new ArrayList<>();
+
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "select match_id from raw_match_data where region=?")) {
+            stmt.setString(1, region.toString());
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    long matchId = rs.getLong(1);
+                    matches.add(new Match(region, matchId));
+                }
+            }
+        }
+
+        return matches;
+    }
+
+    /**
+     * Returns the JSON blob for the given match.
+     *
+     * @throws RuntimeException if there is no entry in the data store for the given match
+     */
+    public String getMatch(Match match) throws SQLException {
+        checkNotNull(match);
+
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "select json from raw_match_data where region=? and match_id=?")) {
+            stmt.setString(1, match.getRegion().toString());
+            stmt.setLong(2, match.getId());
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (!rs.next()) {
+                    throw new RuntimeException("invalid match: " + match);
+                }
+                return rs.getString(1);
+            }
+        }
+    }
+
+    /**
      * Returns true if the identified NURF interval already has match ids in the data store.
      */
     public boolean hasNurfInterval(Region region, long beginDate) throws SQLException {
@@ -95,6 +136,19 @@ public class RiotDao {
                 stmt.addBatch();
             }
             stmt.executeBatch();
+        }
+    }
+
+    /**
+     * Inserts or replaces champion win/game stats.
+     */
+    public void replaceChampionWinStats(int championId, int wins, int games) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "replace champion (id, wins, games) values (?,?,?)")) {
+            stmt.setInt(1, championId);
+            stmt.setInt(2,  wins);
+            stmt.setInt(3,  games);
+            stmt.execute();
         }
     }
 

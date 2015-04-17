@@ -116,8 +116,11 @@ public class ApiDao {
     private static enum HttpStatus {
         NONE(0, Action.FAIL),
         HTTP_200(200, Action.SUCCESS),
+        HTTP_400(400, Action.FAIL),
+        HTTP_401(401, Action.FAIL),
         HTTP_429(429, Action.RETRY),
-        HTTP_500(500, Action.RETRY);
+        HTTP_500(500, Action.RETRY),
+        HTTP_503(503, Action.RETRY);
 
         private static enum Action {
             SUCCESS,

@@ -12,9 +12,6 @@ import java.sql.SQLException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-/**
- * @author dsilveira
- */
 public class NurfScraper {
 
     private static final Logger logger = LogManager.getLogger();
