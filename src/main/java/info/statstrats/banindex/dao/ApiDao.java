@@ -80,12 +80,22 @@ public class ApiDao {
         try {
             sleep();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            status = HttpStatus.forCode(conn.getResponseCode());
+            int code = conn.getResponseCode();
+            status = HttpStatus.forCode(code);
+            if (status == null) {
+                logger.warn("Unrecognized code: {}:  {}\n", code, url);
+                return null;
+            }
             while (status.isRetry()) {
                 logger.warn("{}, retrying...:  {}\n", status, url);
                 sleep();
                 conn = (HttpURLConnection) url.openConnection();
-                status = HttpStatus.forCode(conn.getResponseCode());
+                code = conn.getResponseCode();
+                status = HttpStatus.forCode(code);
+                if (status == null) {
+                    logger.warn("Unrecognized code: {}:  {}\n", code, url);
+                    return null;
+                }
             }
             try (BufferedReader in = new BufferedReader(
                     new InputStreamReader(conn.getInputStream(), Charsets.UTF_8))) {
