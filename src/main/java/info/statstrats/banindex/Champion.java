@@ -12,7 +12,7 @@ public class Champion implements Comparable<Champion> {
         this.id = id;
         this.wins = wins;
         this.games = games;
-        this.banIndex = ((double) wins / games - .5) * games;
+        this.banIndex = (getWinRate() - .5) * games;
     }
 
     public int getId() {
@@ -21,6 +21,10 @@ public class Champion implements Comparable<Champion> {
 
     public int getWins() {
         return wins;
+    }
+
+    public double getWinRate() {
+        return (double) wins / games;
     }
 
     public int getGames() {
