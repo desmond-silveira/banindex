@@ -31,6 +31,10 @@ public class Champion implements Comparable<Champion> {
         return banIndex;
     }
 
+    public String getImageName() {
+        return ChampionNameMap.INSTANCE.getName(id).toLowerCase().replaceAll("\\W", "");
+    }
+
     @Override
     public int compareTo(Champion champion) {
         return Double.compare(champion.getBanIndex(), this.getBanIndex());

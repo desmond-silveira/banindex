@@ -12,7 +12,7 @@
 Below is a table showing the best champions bans for URF mode in League of Legends.
 </p>
 <h:dataTable var="champion" value="#{championBans.champions}">
-<h:column>#{champion.id}</h:column>
+<h:column><img src="hero/#{champion.imageName}.png"/></h:column>
 <h:column>#{champion.wins}</h:column>
 <h:column>#{champion.games}</h:column>
 </h:dataTable>
