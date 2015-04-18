@@ -1,20 +1,21 @@
 body {
-    background-color: #d0e4fe;
+    background-color: black;
+    color: gold;
 }
 
 h1 {
-    color: orange;
     text-align: center;
 }
 
 p {
     font-size: 20px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 table, th, td {
-    border: 1px solid black;
+    border: 1px solid dimgray;
     border-collapse: collapse;
     text-align: right;
     padding: 10px;
@@ -26,7 +27,6 @@ table, th, td {
 }
 
 .champion-table {
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
-
