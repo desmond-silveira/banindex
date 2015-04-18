@@ -20,6 +20,7 @@ table, th, td {
     border-collapse: collapse;
     text-align: right;
     padding: 10px;
+    font-size: 18px;
 }
 
 .champion-table-champ {
