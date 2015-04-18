@@ -5,6 +5,7 @@ package info.statstrats.banindex.dao;
 
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
+import info.statstrats.banindex.Champion;
 import info.statstrats.banindex.Match;
 import info.statstrats.banindex.Region;
 
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +152,20 @@ public class RiotDao {
             stmt.setInt(3,  games);
             stmt.execute();
         }
+    }
+
+    public List<Champion> retrieveChampionWinStats() throws SQLException {
+        List<Champion> champions = new ArrayList<>(124);
+        try (Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("select * from champion");
+            while (rs.next()) {
+                champions.add(new Champion(
+                        rs.getInt("id"),
+                        rs.getInt("wins"),
+                        rs.getInt("games")));
+            }
+        }
+        return champions;
     }
 
     private Timestamp toTimestamp(long date) {

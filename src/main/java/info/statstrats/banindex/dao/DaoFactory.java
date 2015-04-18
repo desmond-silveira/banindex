@@ -55,16 +55,7 @@ public class DaoFactory {
         return new ApiDao();
     }
 
-//    /**
-//     * @param table the table
-//     * @return the {@link BiddedSearchDao}
-//     */
-//    public BiddedSearchDao createBiddedSearchDao(String table) {
-//        return new BiddedSearchDaoImpl(conn, table);
-//    }
-
     public RiotDao createRiotDao() {
         return new RiotDao(conn);
     }
-
 }
