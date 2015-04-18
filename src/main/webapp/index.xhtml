@@ -4,6 +4,57 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
+
+<div id="player" style="position: absolute; top: -9999px; left: -9999px;"></div>
+<div id="info" onclick="pause()">loading...</div>
+<script src="http://www.youtube.com/player_api"></script>
+<script>
+var vid_ids = [
+  'ySB9byeLbIo', // omega squad teemo
+  'SvCIiXD-L8I', // urf
+  'p9MprTCDA-Y', // bard
+  'JSs2Z-Uar6o', // dj sona
+  'Jk427q3lr7M', // lunar revel
+  'avqNZpeVfok', // e-sports season 5
+  'z6lUFnhoRI', // snowdown showdown 2014
+  'XcBcttsilh4', // rek'sai
+  'kW45BM_77ss', // kalista
+  'hAxB3rRAYNE', // dunkmaster darius
+  'PKCtDAJ6uag', // new rift
+  'vmJcryCA67E', // harrowing 2014
+  'lBO7R9ADaZs' // sion remake
+]
+var vid_id = vid_ids[Math.floor(Math.random() * vid_ids.length)];
+var info = document.getElementById('info');
+var player;
+var paused = false;
+function onYouTubePlayerAPIReady() {
+  player = new YT.Player('player', {
+      videoId: vid_id,
+      events: {
+          onReady: function (e) {
+              e.target.playVideo();
+          },
+          onStateChange: function (event) {
+              if (event.data === 1) {
+                  info.innerHTML = 'PLAY (Click to Pause)';
+              }
+          }
+      }
+  });
+}
+function pause() {
+  if (paused) {
+    player.playVideo();
+    paused = false;
+  } else {
+    player.pauseVideo();
+    paused = true;
+    info.innerHTML = 'PAUSED';
+  }
+}
+</script>
+
 <title>Ban Index</title>
 <link href="./css/styles.css" rel="stylesheet" type="text/css"/>
 </h:head>
