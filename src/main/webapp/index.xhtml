@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 <h:head>
 <title>Ban Index</title>
@@ -12,8 +13,27 @@
 Below is a table showing the best champions bans for URF mode in League of Legends.
 </p>
 <h:dataTable var="champion" value="#{championBans.champions}">
-<h:column><img src="hero/#{champion.imageName}.png"/></h:column>
-<h:column>#{champion.wins}</h:column>
-<h:column>#{champion.games}</h:column>
+<h:column>
+ <f:facet name="header">Champion</f:facet>
+ <img src="hero/#{champion.imageName}.png" width="30" height="30"/>
+</h:column>
+<h:column>
+ <f:facet name="header">Wins</f:facet>
+ <h:outputText value="#{champion.wins}">
+  <f:convertNumber groupingUsed="true" />
+ </h:outputText>
+</h:column>
+<h:column>
+ <f:facet name="header">Games</f:facet>
+ <h:outputText value="#{champion.games}">
+  <f:convertNumber groupingUsed="true" />
+ </h:outputText>
+</h:column>
+<h:column>
+ <f:facet name="header">Ban Index</f:facet>
+ <h:outputText value="#{champion.banIndex}">
+  <f:convertNumber groupingUsed="true" maxFractionDigits="0" />
+ </h:outputText>
+</h:column>
 </h:dataTable>
 </h:body></html>
